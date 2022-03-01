@@ -1,18 +1,20 @@
+import React, { useContext } from "react"
+
+const Context = React.createContext()
+
 /* 用useContext方式 */
 const DemoContext = () => {
   const value = useContext(Context)
-  /* my name is alien */
-  return <div> my name is {value.name}</div>
+  return <div> my name is {value.name} i am {value.age} years old</div>
 }
 /* 用Context.Consumer 方式 */
 const DemoContext1 = () => {
   return <Context.Consumer>
-    {/*  my name is alien  */}
-    {(value) => <div> my name is {value.name}</div>}
+    {(value) => <div> my name is {value.name} i am {value.age} years old</div>}
   </Context.Consumer>
 }
 
-export default () => {
+const UseContext = () => {
   return <div>
     <Context.Provider value={{ name: 'alien', age: 18 }} >
       <DemoContext />
@@ -20,3 +22,5 @@ export default () => {
     </Context.Provider>
   </div>
 }
+
+export default UseContext

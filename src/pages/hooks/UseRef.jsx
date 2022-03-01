@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useRef } from 'react'
+
+// 可以用来获取dom元素，或者class组件实例 。
+// useRef时候，会创建一个原始对象，只要函数组件不被销毁，原始对象就会一直存在，那么我们可以利用这个特性，来通过useRef保存一些数据。
+
 const DemoUseRef = () => {
   const dom = useRef(null)
   const handerSubmit = () => {

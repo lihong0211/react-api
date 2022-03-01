@@ -1,32 +1,52 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 
-export default function index() {
-  const number = useMemo(() => {
-    /** ....大量的逻辑运算 **/
-    return number
-  }, [props.number]) // 只有 props.number 改变的时候，重新计算number的值。
+// const memoizedResult = useMemo(compute, dependencies);
 
-  /* 用 useMemo包裹的list可以限定当且仅当list改变的时候才更新此list，这样就可以避免selectList重新循环 */
-  {
-    useMemo(() => (
-      <div>{
-        selectList.map((i, v) => (
-          <span
-            className={style.listSpan}
-            key={v} >
-            {i.patentName}
-          </span>
-        ))}
-      </div>
-    ), [selectList])
-  }
+// 在初始渲染期间，useMemo( compute, dependencies ) 调用 compute，记忆计算结果，并将其返回给组件。
+// 如果在下一次渲染期间依赖项没有改变，则 useMemo() 不会调用 compute 但返回记忆值。
+// 但是，如果在重新渲染期间依赖项发生变化，则 useMemo() 调用 compute，记忆新值并返回它。这就是 useMemo() 钩子的本质。
 
-  /* 只有当props中，list列表改变的时候，子组件才渲染 */
-  const goodListChild = useMemo(() => <GoodList list={props.list} />, [props.list])
+// 1 缓存一些值，避免重新执行上下文
+// 2 减少不必要的dom循环
+// 3 减少子组件渲染
 
-  return (
-    <div>
-
-    </div>
-  )
+const UseMemo = () => {
+    const [count, setCount] = useState(0)
+    const [dep, setDep] = useState(0)
+    console.log("render")
+    const total = () => {
+        console.log("get total")
+        return 2 * count
+    }
+    const memoTotal = useMemo(() => {
+        console.log("get memoTotal")
+        return 2 * count
+    }, [count])
+    function changeDep() {
+        setDep(dep + 1)
+    }
+    function changeCount() {
+        setCount(count + 1)
+    }
+    return (
+        <div>
+            <h2>useMemo</h2>
+            <button onClick={changeDep}>change dep</button>
+            <button onClick={changeCount}>change count</button>
+            <div>
+                dep: { dep }
+            </div>
+            <div>
+                count: { count }
+            </div>
+            <div>
+                total: { total() }
+            </div>
+            <div>
+                memo total: { memoTotal }
+            </div>
+        </div>
+    )
 }
+
+export default UseMemo
